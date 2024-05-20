@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário Completo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #baixarRespostas {
+            display: none;
+        }
+        #zerarRespostas {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        #adminArea {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            background-color: transparent;
+        }
+
+        body {
+            background-image: url('background.jpeg');
+            background-size: 400px 400px; /* Redimensiona a imagem para cobrir toda a tela */
+            background-position: right top; /* Centraliza a imagem */
+            background-repeat: no-repeat; /* Impede a repetição da imagem */
+        }
+
+        fieldset {
+            width: 550px;
+            /* Ajustar a altura conforme necessário */
+            padding: 10px; /* Adiciona um padding para melhor visualização */
+            font-size: large;
+        }
+
+        /* Estilos para o modal */
+        #customAlert {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        #customAlert button {
+            margin-top: 20px;
+        }
+
+        /* Estilo de sobreposição */
+        #overlay {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Questionário Completo</h1>
+
+    <form id="formulario">
+        <fieldset id="pergunta1">
+            <legend>Qual a sua cor favorita?</legend>
+            <label for="azul">
+                <input type="radio" id="azul" name="cor" value="azul">
+                Azul
+            </label>
+            <label for="verde">
+                <input type="radio" id="verde" name="cor" value="verde">
+                Verde
+            </label>
+            <label for="vermelho">
+                <input type="radio" id="vermelho" name="cor" value="vermelho">
+                Vermelho
+            </label>
+        </fieldset>
+
+        <fieldset id="pergunta2">
+            <legend>Qual o seu animal favorito?</legend>
+            <label for="cachorro">
+                <input type="radio" id="cachorro" name="animal" value="cachorro">
+                Cachorro
+            </label>
+            <label for="gato">
+                <input type="radio" id="gato" name="animal" value="gato">
+                Gato
+            </label>
+            <label for="passaro">
+                <input type="radio" id="passaro" name="animal" value="passaro">
+                Pássaro
+            </label>
+        </fieldset>
+
+        <fieldset id="pergunta3">
+            <legend>Qual o seu filme favorito?</legend>
+            <select id="filme" name="filme">
+                <option value="">Selecione...</option>
+                <option value="o_senhor_dos_aneis">O Senhor dos Anéis</option>
+                <option value="vingadores">Vingadores</option>
+                <option value="parasita">Parasita</option>
+            </select>
+        </fieldset>
+
+        <fieldset id="pergunta4">
+            <legend>Quais idiomas você fala? (marque todos que se aplicam)</legend>
+            <label for="portugues">
+                <input type="checkbox" id="portugues" name="idiomas[]" value="portugues">
+                Português
+            </label>
+            <label for="ingles">
+                <input type="checkbox" id="ingles" name="idiomas[]" value="ingles">
+                Inglês
+            </label>
+            <label for="espanhol">
+                <input type="checkbox" id="espanhol" name="idiomas[]" value="espanhol">
+                Espanhol
+            </label>
+        </fieldset>
+
+        <fieldset id="pergunta5">
+            <legend>Qual é o principal erro do ser humano com o planeta?</legend>
+            <label for="cuidar">
+                <input type="radio" id="cuidar" name="cuidados" value="cuidar">
+                Cuidar
+            </label>
+            <label for="naocuidar">
+                <input type="radio" id="naocuidar" name="cuidados" value="naocuidar">
+                Não Cuidar
+            </label>
+            <label for="poluir">
+                <input type="radio" id="poluir" name="cuidados" value="poluir">
+                Poluir
+            </label>
+        </fieldset>
+
+        <button type="submit">Enviar Respostas</button>
+    </form>
+
+    <div id="adminArea"></div>
+    <button id="baixarRespostas">Baixar Todas as Respostas</button>
+    <button id="zerarRespostas">Zerar Respostas</button>
+
+    <audio id="alertAudio" src="aplausos.mp3" preload="auto"></audio>
+
+    <!-- Modal personalizado -->
+    <div id="overlay"></div>
+    <div id="customAlert">
+        <p id="alertMessage"></p>
+        <button onclick="closeCustomAlert()">Fechar</button>
+    </div>
+
+    <script>
+        document.getElementById('formulario').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            const cor = document.querySelector('input[name="cor"]:checked')?.value;
+            const animal = document.querySelector('input[name="animal"]:checked')?.value;
+            const filme = document.getElementById('filme').value;
+            const idiomas = Array.from(document.querySelectorAll('input[name="idiomas[]"]:checked')).map(el => el.value);
+            const cuidados = document.querySelector('input[name="cuidados"]:checked')?.value;
+    
+            const respostasUsuario = {
+                cor,
+                animal,
+                filme,
+                idiomas,
+                cuidados: [cuidados] // Convertendo para array
+            };
+    
+            const respostasCorretas = {
+                cor: 'azul',
+                animal: 'cachorro',
+                filme: 'o_senhor_dos_aneis',
+                idiomas: ['portugues'], // Deve ser um array
+                cuidados: ['poluir'] // Deve ser um array
+            };
+    
+            let acertos = 0;
+    
+            if (respostasUsuario.cor === respostasCorretas.cor) acertos++;
+            if (respostasUsuario.animal === respostasCorretas.animal) acertos++;
+            if (respostasUsuario.filme === respostasCorretas.filme) acertos++;
+            if (respostasCorretas.idiomas.some(val => respostasUsuario.idiomas.includes(val))) acertos++; // Verifica se está incluído
+            if (respostasCorretas.cuidados.every(val => respostasUsuario.cuidados.includes(val))) acertos++; // Verifica todos
+    
+            // Salva a quantidade de acertos no localStorage
+            let respostas = localStorage.getItem('respostas');
+            respostas = respostas ? JSON.parse(respostas) : [];
+            respostas.push({ usuario: `Usuário${respostas.length + 1}`, acertos });
+            localStorage.setItem('respostas', JSON.stringify(respostas));
+            
+            const audio = document.getElementById('alertAudio');
+            if (acertos >= 3) {
+                audio.play().then(() => {
+                    showCustomAlert(`Parabéns! Você acertou ${acertos} de 5 perguntas. Você ganhou um bombom!`);
+                }).catch(error => {
+                    console.error('Erro ao reproduzir o áudio:', error);
+                    showCustomAlert(`Parabéns! Você acertou ${acertos} de 5 perguntas. Você ganhou um bombom!`);
+                });
+            } else {
+                showCustomAlert(`Você acertou ${acertos} de 5 perguntas.`);
+            }
+        });
+    
+        document.getElementById('baixarRespostas').addEventListener('click', function() {
+            const respostas = JSON.parse(localStorage.getItem('respostas')) || [];
+            let respostasTexto = respostas.map(resposta => `${resposta.usuario}: ${resposta.acertos} acertos`).join('\n\n');
+            const blob = new Blob([respostasTexto], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'respostas.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+    
+           
+            // Esconde os botões após a ação
+            document.getElementById('baixarRespostas').style.display = 'none';
+            document.getElementById('zerarRespostas').style.display = 'none';
+        });
+    
+        document.getElementById('zerarRespostas').addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja zerar todas as respostas?')) {
+                localStorage.removeItem('respostas');
+                alert('Respostas zeradas com sucesso!');
+    
+                // Esconde os botões após a ação
+                document.getElementById('baixarRespostas').style.display = 'none';
+                document.getElementById('zerarRespostas').style.display = 'none';
+            }
+        });
+    
+        document.getElementById('adminArea').addEventListener('click', function() {
+            const senha = prompt('Digite a senha do administrador:');
+            if (senha === 'admin123') {
+                document.getElementById('baixarRespostas').style.display = 'block';
+                document.getElementById('zerarRespostas').style.display = 'block';
+            } else {
+                alert('Senha incorreta!');
+            }
+        });
+
+        function showCustomAlert(message) {
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('customAlert').style.display = 'block';
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('customAlert').style.display = 'none';
+            const audio = document.getElementById('alertAudio');
+            audio.pause();
+            audio.currentTime = 0; // Reseta o áudio para o início
+
+            // Resetar o formulário
+            document.getElementById('formulario').reset();
+        }
+    </script>
+</body>
+</html>
+
