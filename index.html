@@ -12,10 +12,8 @@
         img {
             width: 200px; /* Defina a largura desejada em pixels */
             height: auto; /* Mantém a proporção original da imagem */
-            position: absolute; /* Permite posicionar a imagem */
-            top: 0; /* Coloca a imagem no canto superior */
-            left: 0; /* Coloca a imagem no canto esquerdo */
-            z-index: 1;
+            position: relative; /* Permite posicionar a imagem */
+            top: 0;
         }
 
         body {
@@ -30,7 +28,6 @@
         }
 
         h1 {
-            position: relative;
             margin-left: 0;
             text-align: center;
             font-size: 1.5em;
@@ -176,7 +173,6 @@
     </style>
 </head>
 <body>
-    <img src="background.jpeg">
     <h1>ESCOLA MUNICIPAL "ALBERTO CORRÊA"</h1>
     <h1>Questionário Completo</h1>
 
@@ -254,7 +250,7 @@
                 Poluir
             </label>
         </fieldset>
-
+        <img src="background.jpeg">
         <button type="submit">Enviar Respostas</button>
     </form>
 
