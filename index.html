@@ -6,15 +6,95 @@
     <title>Questionário Completo</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgba(226, 234, 243, 0.877);
+            background-image: url('background.jpeg');
+            background-size: 200px 200px;
+            background-position: left top;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            margin-left: 0;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        fieldset {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        legend {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select,
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+
         #baixarRespostas {
             display: none;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         #zerarRespostas {
             display: none;
             position: fixed;
             top: 20px;
             right: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
+
         #adminArea {
             position: fixed;
             top: 0;
@@ -22,20 +102,6 @@
             width: 50px;
             height: 50px;
             background-color: transparent;
-        }
-
-        body {
-            background-image: url('background.jpeg');
-            background-size: 400px 400px; /* Redimensiona a imagem para cobrir toda a tela */
-            background-position: right top; /* Centraliza a imagem */
-            background-repeat: no-repeat; /* Impede a repetição da imagem */
-        }
-
-        fieldset {
-            width: 550px;
-            /* Ajustar a altura conforme necessário */
-            padding: 10px; /* Adiciona um padding para melhor visualização */
-            font-size: large;
         }
 
         /* Estilos para o modal */
@@ -50,7 +116,9 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             text-align: center;
+            border-radius: 5px;
         }
+
         #customAlert button {
             margin-top: 20px;
         }
@@ -66,9 +134,39 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
         }
+
+        /* Media Queries para ajustes em diferentes tamanhos de tela */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.2em;
+            }
+
+            fieldset {
+                padding: 10px;
+            }
+
+            legend {
+                font-size: 1em;
+            }
+
+            button {
+                font-size: 0.9em;
+            }
+
+            #baixarRespostas,
+            #zerarRespostas {
+                font-size: 0.8em;
+                padding: 5px 10px;
+            }
+        }
     </style>
 </head>
 <body>
+    <h1>ESCOLA MUNICIPAL "ALBERTO CORRÊA"</h1>
     <h1>Questionário Completo</h1>
 
     <form id="formulario">
@@ -226,7 +324,6 @@
             a.click();
             URL.revokeObjectURL(url);
     
-           
             // Esconde os botões após a ação
             document.getElementById('baixarRespostas').style.display = 'none';
             document.getElementById('zerarRespostas').style.display = 'none';
@@ -252,24 +349,22 @@
                 alert('Senha incorreta!');
             }
         });
-
+    
         function showCustomAlert(message) {
             document.getElementById('alertMessage').innerText = message;
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('customAlert').style.display = 'block';
         }
-
+    
         function closeCustomAlert() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('customAlert').style.display = 'none';
             const audio = document.getElementById('alertAudio');
             audio.pause();
             audio.currentTime = 0; // Reseta o áudio para o início
-
+    
             // Resetar o formulário
             document.getElementById('formulario').reset();
         }
     </script>
-</body>
-</html>
-
+    
