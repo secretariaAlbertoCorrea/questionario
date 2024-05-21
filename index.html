@@ -9,11 +9,18 @@
         * {
             box-sizing: border-box;
         }
+        img {
+            width: 200px; /* Defina a largura desejada em pixels */
+            height: auto; /* Mantém a proporção original da imagem */
+            position: absolute; /* Permite posicionar a imagem */
+            top: 0; /* Coloca a imagem no canto superior */
+            left: 0; /* Coloca a imagem no canto esquerdo */
+        }
 
         body {
             background-color: rgba(226, 234, 243, 0.877);
-            background-image: url('background.jpeg');
-            background-size: 200px 200px;
+            /*background-image: url('background.jpeg');
+            background-size: 200px 200px;*/
             background-position: left top;
             background-repeat: no-repeat;
             font-family: Arial, sans-serif;
@@ -166,6 +173,7 @@
     </style>
 </head>
 <body>
+    <img src="background.jpeg">
     <h1>ESCOLA MUNICIPAL "ALBERTO CORRÊA"</h1>
     <h1>Questionário Completo</h1>
 
